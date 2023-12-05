@@ -10,10 +10,8 @@ const SendEmail = require("../../utils/emails/sendEmail");
 const crypto = require("crypto");
 const catchAsync = require("../../utils/catchAsync");
 const { STATUS_CODE, ERRORS, SUCCESS_MSG, ROLES } = require("../../constants/index");
-const { GoogleClient } = require("../../utils/GoogleOthClient");
 const { createStripeAccount } = require("../../utils/Stripe");
-const RoleModel = require("../../model/role");
-const { log } = require("console");
+// const RoleModel = require("../../model/role");
 
 
 
@@ -170,76 +168,76 @@ const verifyEmailCode = catchAsync(async (req, res, next) => {
         res.status(STATUS_CODE.SERVER_ERROR).json({ message: ERRORS.PROGRAMMING.SOME_ERROR, err });
     }
 })
-const addPassword = catchAsync(async (req, res, next) => {
+// const addPassword = catchAsync(async (req, res, next) => {
 
-    let { email, firstName, lastName, role, gender, password, code } = req.body;
-    console.log("---------> ", email);
-    try {
-        if (!email || !firstName || !lastName || !role || !gender || !password || !code) {
-            res.status(STATUS_CODE.BAD_REQUEST).json({ message: ERRORS.REQUIRED.FIELDS_MISSING, fields: ["email", "firstName", "lastName", "role", "gender", "password", "code"] })
-            return
-        }
+//     let { email, firstName, lastName, role, gender, password, code } = req.body;
+//     console.log("---------> ", email);
+//     try {
+//         if (!email || !firstName || !lastName || !role || !gender || !password || !code) {
+//             res.status(STATUS_CODE.BAD_REQUEST).json({ message: ERRORS.REQUIRED.FIELDS_MISSING, fields: ["email", "firstName", "lastName", "role", "gender", "password", "code"] })
+//             return
+//         }
 
-        let UserData = await userModel.findOne({ email })
-        if (!UserData) {
-            res.status(STATUS_CODE.NOT_FOUND).json({ message: ERRORS.INVALID.USER_NOT_FOUND })
-            return
-        }
-        if (UserData.status != "pending") {
-            res.status(STATUS_CODE.BAD_REQUEST).json({ message: ERRORS.ALREADY.ACCOUNT_EXIST })
-            return
-        }
+//         let UserData = await userModel.findOne({ email })
+//         if (!UserData) {
+//             res.status(STATUS_CODE.NOT_FOUND).json({ message: ERRORS.INVALID.USER_NOT_FOUND })
+//             return
+//         }
+//         if (UserData.status != "pending") {
+//             res.status(STATUS_CODE.BAD_REQUEST).json({ message: ERRORS.ALREADY.ACCOUNT_EXIST })
+//             return
+//         }
 
-        // REMOVED AFTER ADDING TOKEN AUTH :
-        let verifyCode = await UserData.verifyEmail({ email: UserData.email, token: code });
-        if (!verifyCode) {
-            res.status(STATUS_CODE.FORBIDDEN).json({ message: ERRORS.UNAUTHORIZED.UNABLE });
-            return;
-        }
+//         // REMOVED AFTER ADDING TOKEN AUTH :
+//         let verifyCode = await UserData.verifyEmail({ email: UserData.email, token: code });
+//         if (!verifyCode) {
+//             res.status(STATUS_CODE.FORBIDDEN).json({ message: ERRORS.UNAUTHORIZED.UNABLE });
+//             return;
+//         }
 
-        if (password.length <= 7) {
-            res.status(STATUS_CODE.SERVER_ERROR).json({ message: ERRORS.INVALID.PASSWORD_LENGTH })
-            return
-        }
+//         if (password.length <= 7) {
+//             res.status(STATUS_CODE.SERVER_ERROR).json({ message: ERRORS.INVALID.PASSWORD_LENGTH })
+//             return
+//         }
 
 
 
-        UserData.firstName = firstName;
-        UserData.lastName = lastName;
-        UserData.role = role;
-        UserData.gender = gender;
-        UserData.status = "created"
+//         UserData.firstName = firstName;
+//         UserData.lastName = lastName;
+//         UserData.role = role;
+//         UserData.gender = gender;
+//         UserData.status = "created"
 
-        const hashPassword = await bycrypt.hashPassword(password);
-        if (!hashPassword) {
-            res.status(STATUS_CODE.SERVER_ERROR).json({ message: "Hashing Error" });
-            return;
-        }
-        UserData.password = hashPassword;
+//         const hashPassword = await bycrypt.hashPassword(password);
+//         if (!hashPassword) {
+//             res.status(STATUS_CODE.SERVER_ERROR).json({ message: "Hashing Error" });
+//             return;
+//         }
+//         UserData.password = hashPassword;
 
-        const roleData = await RoleModel.findOne({ _id: role })
-        // Create Stripe Account
-        if (roleData.name == ROLES.TEACHER) {
-            let customer = await createStripeAccount(firstName, email)
-            if (customer) {
-                UserData.stripId = customer?.id
-            }
-            else {
-                return res.status(STATUS_CODE.BAD_REQUEST).json({ message: ERRORS.PROGRAMMING.STRIP_ERROR });
-            }
-        }
+//         const roleData = await RoleModel.findOne({ _id: role })
+//         // Create Stripe Account
+//         if (roleData.name == ROLES.TEACHER) {
+//             let customer = await createStripeAccount(firstName, email)
+//             if (customer) {
+//                 UserData.stripId = customer?.id
+//             }
+//             else {
+//                 return res.status(STATUS_CODE.BAD_REQUEST).json({ message: ERRORS.PROGRAMMING.STRIP_ERROR });
+//             }
+//         }
 
-        await UserData.save();
-        UserData.password = null
+//         await UserData.save();
+//         UserData.password = null
 
-        res.status(STATUS_CODE.OK).json({ message: SUCCESS_MSG.SUCCESS_MESSAGES.ACCOUNT_CREATED_SUCCESS, result: UserData })
+//         res.status(STATUS_CODE.OK).json({ message: SUCCESS_MSG.SUCCESS_MESSAGES.ACCOUNT_CREATED_SUCCESS, result: UserData })
 
-    } catch (err) {
-        console.log("hsdakjhfdlhf", err)
-        res.status(STATUS_CODE.SERVER_ERROR).json({ message: ERRORS.PROGRAMMING.SOME_ERROR, err });
-    }
+//     } catch (err) {
+//         console.log("hsdakjhfdlhf", err)
+//         res.status(STATUS_CODE.SERVER_ERROR).json({ message: ERRORS.PROGRAMMING.SOME_ERROR, err });
+//     }
 
-})
+// })
 
 
 const genrateForgetEmailVerificationCode = catchAsync(async (req, res, next) => {
@@ -315,4 +313,4 @@ const resetPassword = catchAsync(async (req, res, next) => {
 })
 
 
-module.exports = { login, validate, genrateEmailVerificationCode, changeEmail, verifyEmailCode, addPassword, genrateForgetEmailVerificationCode, resetPassword }
+module.exports = { login, validate, genrateEmailVerificationCode, changeEmail, verifyEmailCode, genrateForgetEmailVerificationCode, resetPassword }

@@ -8,7 +8,7 @@ router.post("/register/validate", authController.validate);
 router.post("/register/genrateEmailCode", authController.genrateEmailVerificationCode);
 router.post("/register/verifyEmail", authController.verifyEmailCode);
 router.post("/register/changeEmail", authController.changeEmail);
-router.post("/register/savePassword", authController.addPassword)
+// router.post("/register/savePassword", authController.addPassword)
 
 router.post("/forget/genrateEmailCode", authController.genrateForgetEmailVerificationCode);
 router.post("/forget/resetPassword", authController.resetPassword);

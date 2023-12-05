@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const RolesModel = require("../model/role")
 
 require("dotenv").config();
 
