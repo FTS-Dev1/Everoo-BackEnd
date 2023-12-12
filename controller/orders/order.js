@@ -33,21 +33,21 @@ const createOrder = catchAsync(async (req, res, next) => {
       return;
     }
 
-    const newOrder = new OrderModel(request.body);
+    const newOrder = new OrderModel(req.body);
     await newOrder.save();
 
-    await SendEmail(
-      {
-        email,
-        subject: "Order Confirmation",
-        code: "Thank you for Order!",
-      },
-      next
-    );
+    // await SendEmail(
+    //   {
+    //     email,
+    //     subject: "Order Confirmation",
+    //     code: "Thank you for Order!",
+    //   },
+    //   next
+    // );
 
     res
       .status(STATUS_CODE.OK)
-      .json({ message: SUCCESS_MSG.SUCCESS_MESSAGES.SUBSCRIPTION, isSubscription: newSubscription.isSubscription });
+      .json({ message: SUCCESS_MSG.SUCCESS_MESSAGES.OPERATION_SUCCESSFULL });
   } catch (err) {
     console.log(err);
     res
@@ -58,15 +58,10 @@ const createOrder = catchAsync(async (req, res, next) => {
 
 const getAllOrders = catchAsync(async (req, res) => {
   try {
-    const data = await OrderModel.find({ isSubscription: true });
+    const result = await OrderModel.find().populate("event");
 
-    // const email = data.map((user) => user.email);
-    const subscribedUsers = data.map((user) => ({
-      email: user.email,
-      userId: user._id
-    }));
 
-    res.status(STATUS_CODE.OK).json({ message: SUCCESS_MSG.SUCCESS_MESSAGES.OPERATION_SUCCESSFULL, subscribedUsers: subscribedUsers });
+    res.status(STATUS_CODE.OK).json({ message: SUCCESS_MSG.SUCCESS_MESSAGES.OPERATION_SUCCESSFULL, result });
   } catch (err) {
     console.log(err);
     res.status(STATUS_CODE.BAD_REQUEST).json({ statusCode: STATUS_CODE.BAD_REQUEST, err })

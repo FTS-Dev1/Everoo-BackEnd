@@ -14,12 +14,17 @@ const shuttle = require("./shuttle")
 const staff = require("./staff")
 const veranstaltungstechnik = require("./veranstaltungstechnik")
 
+const city = require("./city")
+const event = require("./event")
+const range = require("./range")
+
 
 
 const controllers = {
     auth,
     user,
     order,
+    
     ausstattung,
     beverage,
     catering,
@@ -30,7 +35,11 @@ const controllers = {
     prasente,
     shuttle,
     staff,
-    veranstaltungstechnik
+    veranstaltungstechnik,
+
+    city,
+    event,
+    range
 }
 
 module.exports = controllers;

@@ -27,5 +27,10 @@ router.use(routes.SHUTTLE, controllers.shuttle)
 router.use(routes.STAFF, controllers.staff)
 router.use(routes.VERANST, controllers.veranstaltungstechnik)
 
+router.use(routes.CITY, controllers.city)
+router.use(routes.EVENT, controllers.event)
+router.use(routes.RANGE, controllers.range)
+router.use(routes.ORDER, controllers.order)
+
 
 module.exports = router;

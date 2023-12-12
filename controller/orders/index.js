@@ -3,8 +3,11 @@ const router = express();
 const orderController = require('./order')
 
 
-router.post("/",orderController.getAllOrders)
 router.post("/",orderController.createOrder)
+
+
+
+router.get("/",orderController.getAllOrders)
 
 
 module.exports = router;

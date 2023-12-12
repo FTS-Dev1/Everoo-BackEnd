@@ -15,7 +15,16 @@ const ordersSchema = new mongoose.Schema({
     lastName: {
         type: String,
     },
+    budget: String,
+    days: String,
+    hours: String,
+    guests: String,
+    phone: String,
 
+    event: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "EventModel"
+    }
 },
     {
         timestamps: true,

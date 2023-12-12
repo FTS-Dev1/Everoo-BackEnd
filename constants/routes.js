@@ -31,4 +31,9 @@ module.exports = {
   SHUTTLE: "/shuttle",
   STAFF: "/staff",
   VERANST: "/veranstaltungstechnik",
+
+  CITY:"/city",
+  EVENT:"/event",
+  RANGE:"/range",
+  ORDER:"/order",
 };

@@ -14,13 +14,6 @@ const setRange = catchAsync(async (req, res, next) => {
     try {
         let { min, max } = req.body;
 
-        if (!email) {
-            res
-                .status(STATUS_CODE.BAD_REQUEST)
-                .json({ message: "Email is required" });
-            return;
-        }
-
         const isExist = await RangeModel.findOne();
         if (isExist) {
             const updateRange = await RangeModel.findByIdAndUpdate(isExist?._id, { min, max }, { new: true })
@@ -28,7 +21,7 @@ const setRange = catchAsync(async (req, res, next) => {
             return;
         }
 
-        const newRange = new RangeModel(request.body);
+        const newRange = new RangeModel(req.body);
         await newRange.save();
 
         res.status(STATUS_CODE.OK).json({ message: SUCCESS_MSG.SUCCESS_MESSAGES.CREATED, newRange });
