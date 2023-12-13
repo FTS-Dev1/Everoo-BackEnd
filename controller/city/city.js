@@ -92,5 +92,16 @@ const getAllServicesData = catchAsync(async (req, res) => {
     }
 })
 
+const deleteData = catchAsync(async (req, res) => {
+    try {
+        let { id } = req.params;
+        let result = await CityModel.findByIdAndDelete(id)
 
-module.exports = { CreateData, getAllServicesData, getData };
+        res.status(STATUS_CODE.OK).json({ message: SUCCESS_MSG.SUCCESS_MESSAGES.OPERATION_SUCCESSFULL });
+    } catch (err) {
+        console.log(err);
+        res.status(STATUS_CODE.BAD_REQUEST).json({ statusCode: STATUS_CODE.BAD_REQUEST, err })
+    }
+})
+
+module.exports = { CreateData, getAllServicesData, getData, deleteData };

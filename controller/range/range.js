@@ -10,16 +10,9 @@ const { STATUS_CODE, ERRORS, SUCCESS_MSG } = require("../../constants/index");
 
 
 
-const setRange = catchAsync(async (req, res, next) => {
+const createRange = catchAsync(async (req, res, next) => {
     try {
         let { min, max } = req.body;
-
-        const isExist = await RangeModel.findOne();
-        if (isExist) {
-            const updateRange = await RangeModel.findByIdAndUpdate(isExist?._id, { min, max }, { new: true })
-            res.status(STATUS_CODE.OK).json({ message: SUCCESS_MSG.SUCCESS_MESSAGES.UPDATE , updateRange });
-            return;
-        }
 
         const newRange = new RangeModel(req.body);
         await newRange.save();
@@ -33,9 +26,25 @@ const setRange = catchAsync(async (req, res, next) => {
     }
 });
 
+const setRange = catchAsync(async (req, res, next) => {
+    try {
+        let { id } = req.params;
+        let { min, max } = req.body;
+
+        let result = await RangeModel.findByIdAndUpdate(id, req.body)
+
+        res.status(STATUS_CODE.OK).json({ message: SUCCESS_MSG.SUCCESS_MESSAGES.CREATED });
+    } catch (err) {
+        console.log(err);
+        res
+            .status(STATUS_CODE.SERVER_ERROR)
+            .json({ message: ERRORS.PROGRAMMING.SOME_ERROR, err });
+    }
+});
+
 const getRange = catchAsync(async (req, res) => {
     try {
-        const result = await RangeModel.findOne();
+        const result = await RangeModel.find();
 
         res.status(STATUS_CODE.OK).json({ message: SUCCESS_MSG.SUCCESS_MESSAGES.OPERATION_SUCCESSFULL, result });
     } catch (err) {
@@ -44,5 +53,17 @@ const getRange = catchAsync(async (req, res) => {
     }
 })
 
+const deleteRange = catchAsync(async (req, res) => {
+    try {
+        let { id } = req.params;
+        const result = await RangeModel.findByIdAndDelete(id);
 
-module.exports = { setRange, getRange };
+        res.status(STATUS_CODE.OK).json({ message: SUCCESS_MSG.SUCCESS_MESSAGES.OPERATION_SUCCESSFULL });
+    } catch (err) {
+        console.log(err);
+        res.status(STATUS_CODE.BAD_REQUEST).json({ statusCode: STATUS_CODE.BAD_REQUEST, err })
+    }
+})
+
+
+module.exports = { setRange, getRange, createRange, deleteRange };

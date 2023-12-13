@@ -11,5 +11,7 @@ router.use(auth.authenticate);
 
 router.get("/", Controller.getData);
 router.post("/", multer.single("image"), Controller.CreateData);
+router.patch("/:id", multer.single("image"), Controller.UpdateData);
+router.delete("/:id", Controller.deleteData);
 
 module.exports = router;

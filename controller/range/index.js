@@ -10,6 +10,8 @@ const rangeController = require("./range");
 router.use(auth.authenticate);
 
 router.get("/", rangeController.getRange);
-router.post("/:id", rangeController.setRange);
+router.post("/", rangeController.createRange);
+router.patch("/:id", rangeController.setRange);
+router.delete("/:id", rangeController.deleteRange);
 
 module.exports = router;

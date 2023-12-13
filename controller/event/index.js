@@ -14,6 +14,8 @@ router.use(auth.authenticate);
 
 router.get("/", Controller.getData);
 router.post("/", Controller.CreateData);
+router.patch("/:id", Controller.updateData);
 router.delete("/:id", Controller.deleteData);
+
 
 module.exports = router;

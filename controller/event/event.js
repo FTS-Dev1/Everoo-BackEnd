@@ -31,10 +31,28 @@ const CreateData = catchAsync(async (req, res, next) => {
     }
 });
 
+const updateData = catchAsync(async (req, res, next) => {
+    try {
+        let { id } = req.params;
+        let { name, cities } = req.body;
+
+        let payload = {
+            name,
+            cities
+        }
+
+        const result = await EventModel.findByIdAndUpdate(id, payload)
+        res.status(STATUS_CODE.OK).json({ message: SUCCESS_MSG.SUCCESS_MESSAGES.CREATED, result });
+    } catch (err) {
+        console.log(err);
+        res.status(STATUS_CODE.SERVER_ERROR).json({ message: ERRORS.PROGRAMMING.SOME_ERROR, err });
+    }
+});
+
 
 const getData = catchAsync(async (req, res) => {
     try {
-        let result = await EventModel.find().populate({path:"cities" , populate:"Ausstattung Beverage Catering Dekoration Eventmodule Hotelmanagement Location Prasente Shuttle Staff Veranstaltungstechnik"})
+        let result = await EventModel.find().populate({ path: "cities", populate: "Ausstattung Beverage Catering Dekoration Eventmodule Hotelmanagement Location Prasente Shuttle Staff Veranstaltungstechnik" })
 
         res.status(STATUS_CODE.OK).json({ message: SUCCESS_MSG.SUCCESS_MESSAGES.OPERATION_SUCCESSFULL, result });
     } catch (err) {
@@ -56,4 +74,4 @@ const deleteData = catchAsync(async (req, res) => {
 })
 
 
-module.exports = { CreateData, getData , deleteData };
+module.exports = { CreateData, getData, deleteData, updateData };

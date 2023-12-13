@@ -36,6 +36,31 @@ const CreateData = catchAsync(async (req, res, next) => {
     }
 });
 
+const UpdateData = catchAsync(async (req, res, next) => {
+    try {
+        let { id } = req.params;
+        let { title, price, description } = req.body;
+
+
+        let payload = {
+            title,
+            price,
+            description
+        }
+
+        if (req.file) {
+            payload["image"] = await uploadFile(req.file, null);
+        }
+
+        let result = await StaffModel.findByIdAndUpdate(id, payload, { new: true })
+
+        res.status(STATUS_CODE.OK).json({ message: SUCCESS_MSG.SUCCESS_MESSAGES.CREATED, result });
+    } catch (err) {
+        console.log(err);
+        res.status(STATUS_CODE.SERVER_ERROR).json({ message: ERRORS.PROGRAMMING.SOME_ERROR, err });
+    }
+});
+
 const getData = catchAsync(async (req, res) => {
     try {
         const result = await StaffModel.find();
@@ -47,5 +72,18 @@ const getData = catchAsync(async (req, res) => {
     }
 })
 
+const deleteData = catchAsync(async (req, res) => {
+    try {
+        let { id } = req.params;
+        const result = await StaffModel.findByIdAndDelete(id);
 
-module.exports = { CreateData, getData };
+        res.status(STATUS_CODE.OK).json({ message: SUCCESS_MSG.SUCCESS_MESSAGES.OPERATION_SUCCESSFULL });
+    } catch (err) {
+        console.log(err);
+        res.status(STATUS_CODE.BAD_REQUEST).json({ statusCode: STATUS_CODE.BAD_REQUEST, err })
+    }
+})
+
+
+
+module.exports = { CreateData, getData, deleteData, UpdateData };
