@@ -4,12 +4,9 @@ const express = require("express");
 const OrderModel = require("../../model/orders");
 
 // Helpers :
-const jwt = require("../../utils/jwt");
-const bycrypt = require("../../utils/bycrypt");
-const SendEmail = require("../../utils/emails/sendEmail");
-const crypto = require("crypto");
 const catchAsync = require("../../utils/catchAsync");
 const { STATUS_CODE, ERRORS, SUCCESS_MSG } = require("../../constants/index");
+
 
 
 
@@ -58,7 +55,7 @@ const createOrder = catchAsync(async (req, res, next) => {
 
 const getAllOrders = catchAsync(async (req, res) => {
   try {
-    const result = await OrderModel.find().populate("event");
+    const result = await OrderModel.find().populate("event guests city").populate({ path: "services", populate: "Ausstattung Beverage Catering Dekoration Eventmodule Hotelmanagement Location Prasente Shuttle Staff Veranstaltungstechnik" });
 
 
     res.status(STATUS_CODE.OK).json({ message: SUCCESS_MSG.SUCCESS_MESSAGES.OPERATION_SUCCESSFULL, result });
