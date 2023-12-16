@@ -16,7 +16,7 @@ const ordersSchema = new mongoose.Schema({
         type: String,
     },
     budget: Number,
-    days: String,
+    days: Array,
     hours: String,
     phone: String,
     bill: Number,
