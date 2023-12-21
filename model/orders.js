@@ -15,9 +15,10 @@ const ordersSchema = new mongoose.Schema({
     lastName: {
         type: String,
     },
+    address: String,
     budget: Number,
     days: Array,
-    hours: String,
+    hours: Array,
     phone: String,
     bill: Number,
 
