@@ -43,6 +43,25 @@ const CreateData = catchAsync(async (req, res, next) => {
     }
 });
 
+const UpdateData = catchAsync(async (req, res, next) => {
+    try {
+        let { id } = req.params;
+        let { name, services } = req.body;
+
+        let payload = {
+            name,
+            ...services
+        }
+
+        const newData = await CityModel.findByIdAndUpdate(id, payload, { new: true });
+
+        res.status(STATUS_CODE.OK).json({ message: SUCCESS_MSG.SUCCESS_MESSAGES.UPDATE, newData });
+    } catch (err) {
+        console.log(err);
+        res.status(STATUS_CODE.SERVER_ERROR).json({ message: ERRORS.PROGRAMMING.SOME_ERROR, err });
+    }
+});
+
 
 const getData = catchAsync(async (req, res) => {
     try {
@@ -104,4 +123,4 @@ const deleteData = catchAsync(async (req, res) => {
     }
 })
 
-module.exports = { CreateData, getAllServicesData, getData, deleteData };
+module.exports = { CreateData, getAllServicesData, getData, deleteData, UpdateData };
