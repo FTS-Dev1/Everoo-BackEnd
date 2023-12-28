@@ -6,7 +6,7 @@ const app = express();
 const cors = require("cors");
 const morgan = require("morgan");
 const errorHandler = require("./controller/error/errorhandler");
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
 require("./config/connection");
 
 app.use(express.json());

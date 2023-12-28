@@ -22,13 +22,13 @@ const createOrder = catchAsync(async (req, res, next) => {
       return;
     }
 
-    const isExist = await OrderModel.findOne({ email });
-    if (isExist) {
-      res
-        .status(STATUS_CODE.DUPLICATE)
-        .json({ message: ERRORS.UNIQUE.ALREADY_EMAIL });
-      return;
-    }
+    // const isExist = await OrderModel.findOne({ email });
+    // if (isExist) {
+    //   res
+    //     .status(STATUS_CODE.DUPLICATE)
+    //     .json({ message: ERRORS.UNIQUE.ALREADY_EMAIL });
+    //   return;
+    // }
 
     const newOrder = new OrderModel(req.body);
     await newOrder.save();
