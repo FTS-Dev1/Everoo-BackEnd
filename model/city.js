@@ -6,7 +6,10 @@ const validator = require("validator");
 
 
 const citySchema = new mongoose.Schema({
-    name: String,
+    name: {
+        type: String,
+        unique: true
+    },
     Ausstattung: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "AusstattungModel",

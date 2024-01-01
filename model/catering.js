@@ -7,8 +7,10 @@ const validator = require("validator");
 
 const cateringSchema = new mongoose.Schema({
     image: Object,
-    title: String,
-    price: Number,
+    title: {
+        type: String,
+        unique: true
+    },    price: Number,
     description: String
 }, { timestamps: true })
 

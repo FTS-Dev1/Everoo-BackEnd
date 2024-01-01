@@ -7,7 +7,10 @@ const validator = require("validator");
 
 const hotelmanagementSchema = new mongoose.Schema({
     image: Object,
-    title: String,
+    title: {
+        type: String,
+        unique: true
+    },
     price: Number,
     description: String
 }, { timestamps: true })
